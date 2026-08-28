@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Interactive 3D developer portfolio of Toushif — Front-End Developer, App Developer, Python Developer, UI/UX Designer and Tech Educator. Built with Three.js, GSAP and modern web technologies." />
+  <meta name="keywords"
+    content="Toushif, Code With Toushif, 3D portfolio, Three.js, GSAP, Front-End Developer, Web Developer, Flutter, Python" />
+  <meta name="author" content="Toushif" />
+  <meta name="theme-color" content="#070812" />
+  <meta property="og:title" content="Code With Toushif — Interactive 3D Portfolio" />
+  <meta property="og:description"
+    content="A modern, immersive 3D developer portfolio showcasing projects, skills and experience." />
+  <meta property="og:type" content="website" />
+  <title>Code With Toushif — Interactive 3D Portfolio</title>
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2300d4ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='40' font-family='Arial,sans-serif' font-weight='bold' text-anchor='middle' fill='%23ffffff'%3ECT%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- No-JS fallback: never trap the visitor behind the loader -->
+  <noscript>
+    <style>
+      .preloader,
+      .cursor-dot,
+      .cursor-ring {
+        display: none !important;
+      }
+    </style>
+  </noscript>
+</head>
+
+<body>
+
+  <!-- Accessibility: skip link -->
+  <a class="skip-link" href="#home">Skip to content</a>
+
+  <!-- ══════════ Preloader — masked word reveal ══════════ -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-words" role="img" aria-label="Code With Toushif">
+        <span class="lw-mask"><span class="lw-word" data-word="CODE"></span></span>
+        <span class="lw-mask"><span class="lw-word" data-word="WITH"></span></span>
+        <span class="lw-mask"><span class="lw-word accent" data-word="TOUSHIF"></span></span>
+      </div>
+      <div class="loader-line"><span class="loader-line-fill" id="loader-fill"></span></div>
+    </div>
+    <div class="loader-count"><span id="loader-count">0</span><span class="pct">%</span></div>
+    <p class="loader-caption">Portfolio · Loading experience</p>
+  </div>
+
+  <!-- ══════════ Scroll Progress ══════════ -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- ══════════ Custom Cursor ══════════ -->
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- ══════════ Background FX ══════════ -->
+  <canvas id="liquid-bg" aria-hidden="true"></canvas>
+  <canvas id="bg-particles" aria-hidden="true"></canvas>
+  <div class="bg-orbs" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+  </div>
+
+  <!-- ══════════ Header / Navigation ══════════ -->
+  <header class="header" id="header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a href="#home" class="logo">
+        <span class="logo-mark">CWT</span>
+        <span class="logo-text">CodeWith<span class="accent-text">Toushif</span></span>
+      </a>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark / light theme">
+          <i class="fa-solid fa-sun" id="theme-icon"></i>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ══════════ Main ══════════ -->
+  <main>
+    <!-- ──────── Hero ──────── -->
+    <section id="home" class="hero">
+      <!-- Liquid blob decorations -->
+      <div class="liquid-blobs" aria-hidden="true">
+        <span class="liquid-blob lb-1"></span>
+        <span class="liquid-blob lb-2"></span>
+        <span class="liquid-blob lb-3"></span>
+      </div>
+
+      <div class="hero-inner container">
+        <div class="hero-content">
+          <p class="hero-greet"><span class="wave" aria-hidden="true">👋</span> Hello World, I'm</p>
+          <h1 class="hero-name">Toushif Ahmed</h1>
+          <h2 class="hero-roles">I'm a <span id="typed" class="typed">Front-End Developer</span><span
+              class="typed-cursor" aria-hidden="true">|</span></h2>
+          <p class="hero-desc">
+            I build modern websites, applications, developer tools, interactive interfaces
+            and immersive <strong>3D web experiences</strong> that people love to use.
+          </p>
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary magnetic">
+              <i class="fa-solid fa-rocket" aria-hidden="true"></i> View My Work
+            </a>
+            <a href="#contact" class="btn btn-outline magnetic">
+              <i class="fa-regular fa-paper-plane" aria-hidden="true"></i> Get In Touch
+            </a>
+          </div>
+          <div class="hero-socials">
+            <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube" class="social-link"><i
+                class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+            <a href="https://github.com" target="_blank" rel="noopener" aria-label="GitHub" class="social-link"><i
+                class="fa-brands fa-github" aria-hidden="true"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram" class="social-link"><i
+                class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+            <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook" class="social-link"><i
+                class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-link"><i
+                class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+          </div>
+        </div>
+
+        <div class="hero-visual" id="hero-visual">
+          <div id="hero-canvas" aria-label="Interactive 3D scene — drag to rotate"></div>
+          <div class="hero-badge badge-1">
+            <i class="fa-solid fa-cube" aria-hidden="true"></i>
+            <div><strong>3D Experiences</strong><span>Three.js · WebGL</span></div>
+          </div>
+          <div class="hero-badge badge-2">
+            <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+            <div><strong>Smooth Motion</strong><span>GSAP Animations</span></div>
+          </div>
+        </div>
+      </div>
+
+      <a href="#about" class="scroll-indicator" aria-label="Scroll to about section">
+        <span class="mouse"><span class="wheel"></span></span>
+        <span class="scroll-text">Scroll</span>
+      </a>
+    </section>
+
+    <!-- ──────── About ──────── -->
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag">01 · About</span>
+          <h2 class="section-title">Get To Know <span class="accent-text">Me</span></h2>
+          <span class="section-line"></span>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-text reveal">
+            <h3>A developer &amp; creator who loves <span class="accent-text">building for the web</span>.</h3>
+            <p>
+              I'm <strong>Toushif</strong> — a passionate developer, designer and content creator.
+              I craft modern websites, cross-platform mobile apps, practical Python tools and
+              interactive 3D interfaces — and I teach everything I learn along the way.
+            </p>
+            <p>
+              My mission is simple: turn ideas into fast, beautiful and accessible digital
+              experiences, and help other developers level up through clear, practical content.
+            </p>
+            <ul class="roles-list">
+              <li><i class="fa-solid fa-code" aria-hidden="true"></i> Front-End Developer</li>
+              <li><i class="fa-solid fa-mobile-screen" aria-hidden="true"></i> App Developer</li>
+              <li><i class="fa-brands fa-python" aria-hidden="true"></i> Python Developer</li>
+              <li><i class="fa-solid fa-pen-ruler" aria-hidden="true"></i> UI/UX Designer</li>
+              <li><i class="fa-brands fa-youtube" aria-hidden="true"></i> YouTuber</li>
+              <li><i class="fa-solid fa-clapperboard" aria-hidden="true"></i> Content Creator</li>
+              <li><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Tech Educator</li>
+            </ul>
+          </div>
+
+          <div class="about-side">
+            <div class="stats-grid stagger">
+              <div class="stat-card">
+                <span class="stat-num"><span class="counter" data-count="3">0</span>+</span>
+                <span class="stat-label">Years Experience</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-num"><span class="counter" data-count="25">0</span>+</span>
+                <span class="stat-label">Projects Completed</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-num"><span class="counter" data-count="100">0</span>+</span>
+                <span class="stat-label">Videos Created</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-num"><span class="counter" data-count="5000">0</span>+</span>
+                <span class="stat-label">Community Members</span>
+              </div>
+            </div>
+
+            <div class="info-card reveal">
+              <div class="info-row">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                <div><span>Location</span><strong>Bangladesh</strong></div>
+              </div>
+              <div class="info-row">
+                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                <div><span>Email</span><strong>hello@codewithtoushif.com</strong></div>
+              </div>
+              <div class="info-row">
+                <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                <div><span>Freelance</span><strong class="status-open">Available</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────── Skills ──────── -->
+    <section id="skills" class="section section-alt">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag">02 · Skills</span>
+          <h2 class="section-title">My Tech <span class="accent-text">Stack</span></h2>
+          <span class="section-line"></span>
+        </div>
+
+        <div class="skills-grid stagger">
+          <article class="skill-cat">
+            <div class="skill-icon"><i class="fa-solid fa-code" aria-hidden="true"></i></div>
+            <h3>Front-End</h3>
+            <ul>
+              <li>HTML5</li>
+              <li>CSS3</li>
+              <li>JavaScript</li>
+              <li>React</li>
+              <li>Tailwind CSS</li>
+            </ul>
+          </article>
+
+          <article class="skill-cat">
+            <div class="skill-icon"><i class="fa-solid fa-cube" aria-hidden="true"></i></div>
+            <h3>3D &amp; Animation</h3>
+            <ul>
+              <li>Three.js</li>
+              <li>React Three Fiber</li>
+              <li>GSAP</li>
+              <li>ScrollTrigger</li>
+            </ul>
+          </article>
+
+          <article class="skill-cat">
+            <div class="skill-icon"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i></div>
+            <h3>Mobile</h3>
+            <ul>
+              <li>Flutter</li>
+              <li>Dart</li>
+            </ul>
+          </article>
+
+          <article class="skill-cat">
+            <div class="skill-icon"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></div>
+            <h3>Programming &amp; Tools</h3>
+            <ul>
+              <li>Python</li>
+              <li>Git</li>
+              <li>GitHub</li>
+              <li>VS Code</li>
+              <li>Figma</li>
+            </ul>
+          </article>
+
+          <article class="skill-cat">
+            <div class="skill-icon"><i class="fa-solid fa-pen-ruler" aria-hidden="true"></i></div>
+            <h3>UI/UX &amp; Design</h3>
+            <ul>
+              <li>Figma</li>
+              <li>UI/UX Design</li>
+              <li>Responsive Design</li>
+              <li>Wireframing</li>
+              <li>Prototyping</li>
+              <li>Design Systems</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="skill-bars">
+          <div class="skill-bar">
+            <div class="bar-head"><span>HTML5</span><span class="percent">95%</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" data-percent="95"></div>
+            </div>
+          </div>
+          <div class="skill-bar">
+            <div class="bar-head"><span>CSS3</span><span class="percent">90%</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" data-percent="90"></div>
+            </div>
+          </div>
+          <div class="skill-bar">
+            <div class="bar-head"><span>JavaScript</span><span class="percent">88%</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" data-percent="88"></div>
+            </div>
+          </div>
+          <div class="skill-bar">
+            <div class="bar-head"><span>React</span><span class="percent">82%</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" data-percent="82"></div>
+            </div>
+          </div>
+          <div class="skill-bar">
+            <div class="bar-head"><span>Three.js</span><span class="percent">78%</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" data-percent="78"></div>
+            </div>
+          </div>
+          <div class="skill-bar">
+            <div class="bar-head"><span>GSAP</span><span class="percent">85%</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" data-percent="85"></div>
+            </div>
+          </div>
+          <div class="skill-bar">
+            <div class="bar-head"><span>Flutter</span><span class="percent">80%</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" data-percent="80"></div>
+            </div>
+          </div>
+          <div class="skill-bar">
+            <div class="bar-head"><span>Python</span><span class="percent">84%</span></div>
+            <div class="bar-track">
+              <div class="bar-fill" data-percent="84"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────── Projects ──────── -->
+    <section id="projects" class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag">03 · Projects</span>
+          <h2 class="section-title">Featured <span class="accent-text">Work</span></h2>
+          <span class="section-line"></span>
+        </div>
+
+        <div class="project-filters reveal" id="project-filters" role="group" aria-label="Filter projects">
+          <button class="filter-btn active" data-filter="all" type="button">All<span class="f-count">12</span></button>
+          <button class="filter-btn" data-filter="web" type="button">Web<span class="f-count">2</span></button>
+          <button class="filter-btn" data-filter="3d" type="button">3D<span class="f-count">2</span></button>
+          <button class="filter-btn" data-filter="mobile" type="button">Mobile<span class="f-count">2</span></button>
+          <button class="filter-btn" data-filter="python" type="button">Python<span class="f-count">2</span></button>
+          <button class="filter-btn" data-filter="ui" type="button">UI/UX<span class="f-count">2</span></button>
+          <button class="filter-btn" data-filter="tools" type="button">Tools<span class="f-count">2</span></button>
+        </div>
+
+        <div class="projects-grid stagger">
+          <article class="project-card" data-category="ui">
+            <div class="project-thumb g1">
+              <span class="thumb-chip">UI/UX</span>
+              <i class="fa-solid fa-palette" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>Gradiently</h3>
+              <p>A modern gradient library and customization tool for developers and designers — generate, tweak and
+                export beautiful gradients.</p>
+              <div class="project-tags"><span>JavaScript</span><span>CSS</span><span>UI</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View Gradiently live demo"><i class="fa-solid fa-arrow-up-right-from-square"
+                    aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View Gradiently source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="tools">
+            <div class="project-thumb g2">
+              <span class="thumb-chip">Tools</span>
+              <i class="fa-solid fa-toolbox" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>Developer Tools</h3>
+              <p>Useful web-based tools designed to improve developer productivity and everyday coding workflows.</p>
+              <div class="project-tags"><span>JavaScript</span><span>APIs</span><span>Productivity</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View Developer Tools live demo"><i
+                    class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View Developer Tools source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="python">
+            <div class="project-thumb g3">
+              <span class="thumb-chip">Python</span>
+              <i class="fa-brands fa-python" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>Python Projects</h3>
+              <p>Practical Python tools and automation projects — scripts that save time and solve real problems.</p>
+              <div class="project-tags"><span>Python</span><span>Automation</span><span>Scripting</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View Python projects live demo"><i
+                    class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View Python projects source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="mobile">
+            <div class="project-thumb g4">
+              <span class="thumb-chip">Mobile</span>
+              <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>Mobile Applications</h3>
+              <p>Cross-platform mobile applications built with Flutter and Dart — clean UI, smooth performance.</p>
+              <div class="project-tags"><span>Flutter</span><span>Dart</span><span>Mobile</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View mobile applications live demo"><i
+                    class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View mobile applications source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="ui">
+            <div class="project-thumb g5">
+              <span class="thumb-chip">UI/UX</span>
+              <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>UI Components</h3>
+              <p>Modern, reusable UI components and interactive web interfaces for faster frontend development.</p>
+              <div class="project-tags"><span>React</span><span>CSS</span><span>Components</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View UI components live demo"><i class="fa-solid fa-arrow-up-right-from-square"
+                    aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View UI components source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="3d">
+            <div class="project-thumb g1">
+              <span class="thumb-chip">3D</span>
+              <i class="fa-solid fa-cube" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>Orbitfolio 3D</h3>
+              <p>An interactive 3D portfolio template built with Three.js and GSAP — draggable scenes, scroll
+                storytelling and shader effects.</p>
+              <div class="project-tags"><span>Three.js</span><span>GSAP</span><span>WebGL</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View Orbitfolio 3D live demo"><i class="fa-solid fa-arrow-up-right-from-square"
+                    aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View Orbitfolio 3D source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="web">
+            <div class="project-thumb g2">
+              <span class="thumb-chip">Web</span>
+              <i class="fa-solid fa-cloud-sun" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>Weatherly</h3>
+              <p>A beautiful weather app with animated conditions, hourly forecasts and location search powered by a
+                free weather API.</p>
+              <div class="project-tags"><span>JavaScript</span><span>REST API</span><span>Charts</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View Weatherly live demo"><i class="fa-solid fa-arrow-up-right-from-square"
+                    aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View Weatherly source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="web">
+            <div class="project-thumb g3">
+              <span class="thumb-chip">Web</span>
+              <i class="fa-solid fa-gamepad" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>CodeQuiz Arena</h3>
+              <p>A timed quiz arena for developers — JavaScript, Python and CSS challenges with streaks, scores and a
+                global leaderboard.</p>
+              <div class="project-tags"><span>JavaScript</span><span>LocalStorage</span><span>Gamification</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View CodeQuiz Arena live demo"><i class="fa-solid fa-arrow-up-right-from-square"
+                    aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View CodeQuiz Arena source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="tools">
+            <div class="project-thumb g4">
+              <span class="thumb-chip">Tools</span>
+              <i class="fa-solid fa-file-invoice" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>InvoiceGen</h3>
+              <p>Generate clean, professional invoices in seconds — live preview, PDF export, tax settings and saved
+                client history.</p>
+              <div class="project-tags"><span>JavaScript</span><span>PDF</span><span>Productivity</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View InvoiceGen live demo"><i class="fa-solid fa-arrow-up-right-from-square"
+                    aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View InvoiceGen source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="python">
+            <div class="project-thumb g5">
+              <span class="thumb-chip">Python</span>
+              <i class="fa-solid fa-folder-tree" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>FileSorter Pro</h3>
+              <p>A smart desktop app that auto-organizes messy folders by type, date and custom rules — built with
+                Python and Tkinter.</p>
+              <div class="project-tags"><span>Python</span><span>Tkinter</span><span>Desktop</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View FileSorter Pro live demo"><i class="fa-solid fa-arrow-up-right-from-square"
+                    aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View FileSorter Pro source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="mobile">
+            <div class="project-thumb g1">
+              <span class="thumb-chip">Mobile</span>
+              <i class="fa-solid fa-heart-pulse" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>FitTrack</h3>
+              <p>A Flutter fitness companion — workout logs, step counter, progress charts and weekly goals with local
+                notifications.</p>
+              <div class="project-tags"><span>Flutter</span><span>Dart</span><span>Charts</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View FitTrack live demo"><i class="fa-solid fa-arrow-up-right-from-square"
+                    aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View FitTrack source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="3d">
+            <div class="project-thumb g2">
+              <span class="thumb-chip">3D</span>
+              <i class="fa-solid fa-sparkles" aria-hidden="true"></i>
+            </div>
+            <div class="project-body">
+              <h3>Particle Playground</h3>
+              <p>An interactive WebGL particle lab — tweak forces, colors and counts in real time, then export your own
+                presets.</p>
+              <div class="project-tags"><span>Three.js</span><span>Shaders</span><span>Canvas</span></div>
+              <div class="project-links">
+                <a href="#" aria-label="View Particle Playground live demo"><i
+                    class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Live Demo</a>
+                <a href="#" aria-label="View Particle Playground source code"><i class="fa-brands fa-github"
+                    aria-hidden="true"></i> Code</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────── Contact ──────── -->
+    <section id="contact" class="section section-alt">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-tag">04 · Contact</span>
+          <h2 class="section-title">Let's Work <span class="accent-text">Together</span></h2>
+          <span class="section-line"></span>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info reveal">
+            <h3>Have a project in mind?</h3>
+            <p>
+              Whether it's a website, a mobile app, a Python tool or a 3D web experience —
+              I'd love to hear about it. Drop a message and let's build something great.
+            </p>
+            <div class="info-rows">
+              <div class="info-row">
+                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                <div><span>Email</span><strong>hello@codewithtoushif.com</strong></div>
+              </div>
+              <div class="info-row">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                <div><span>Location</span><strong>Bangladesh· Working Worldwide</strong></div>
+              </div>
+              <div class="info-row">
+                <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                <div><span>Status</span><strong class="status-open">Open for freelance &amp; collabs</strong></div>
+              </div>
+            </div>
+            <div class="contact-socials">
+              <a href="https://www.youtube.com/@TousifsCodeAcademy" target="_blank" rel="noopener" aria-label="YouTube" class="social-link"><i
+                  class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+              <a href="https://instagram.com/codewithtoushif" target="_blank" rel="noopener" aria-label="Instagram"
+                class="social-link"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+              <a href="https://github.com/codewithtoushif" target="_blank" rel="noopener" aria-label="GitHub" class="social-link"><i
+                  class="fa-brands fa-github" aria-hidden="true"></i></a>
+              <a href="https://linkedin.com/codewithtoushif" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-link"><i
+                  class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+              <a href="https://facebook.com/codewithtoushif" target="_blank" rel="noopener" aria-label="Facebook" class="social-link"><i
+                  class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+            </div>
+          </div>
+
+          <form class="contact-form reveal" id="contact-form" novalidate>
+            <div class="form-group">
+              <label for="cf-name">Your Name</label>
+              <input type="text" id="cf-name" name="name" placeholder="John Doe" required />
+            </div>
+            <div class="form-group">
+              <label for="cf-email">Your Email</label>
+              <input type="email" id="cf-email" name="email" placeholder="john@example.com" required />
+            </div>
+            <div class="form-group">
+              <label for="cf-subject">Subject</label>
+              <input type="text" id="cf-subject" name="subject" placeholder="Project inquiry" />
+            </div>
+            <div class="form-group">
+              <label for="cf-message">Message</label>
+              <textarea id="cf-message" name="message" rows="5" placeholder="Tell me about your project…"
+                required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary magnetic">
+              <i class="fa-regular fa-paper-plane" aria-hidden="true"></i> Send Message
+            </button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+
+
+
+  <!-- ──────── Footer ──────── -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="#home" class="logo">
+        <span class="logo-mark">CWT</span>
+        <span class="logo-text">CodeWith<span class="accent-text">Toushif Ahmed</span></span>
+      </a>
+      <p>Designed &amp; built with <i class="fa-solid fa-heart" aria-hidden="true"></i> by Code With Toushif · © <span
+          id="year">2026</span></p>
+      <p class="footer-note">Personal portfolio — customize it, remix it and make it yours.</p>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- Libraries (Three.js + GSAP via CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <!-- App -->
+  <script src="script.js"></script>
+</body>
+
+</html>
