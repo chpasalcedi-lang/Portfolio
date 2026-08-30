@@ -1,8 +1,9 @@
+var scriptUrl = 'https://script.google.com/macros/s/AKfycbzFgh_JC1UMGwYiQjYZAtQxv07UDQG9dJYX_9FK7zEycM6D07mdxXeYVLr1yDMZ8RLNWg/exec';
 /* ════════════════════════════════════════════════════════════
    Code With Toushif — Interactive 3D Portfolio
    script.js · Three.js hero · GSAP animations · Particles
    Theme system · Custom cursor · UI interactions
-   ════════════════════════════════════════════════════════════ */
+   ════════════════════════════════════════════════*/
 
 (function () {
     'use strict';
@@ -184,8 +185,8 @@
     }
     function refreshParticleTheme() {
         var light = currentTheme() === 'light';
-        particleColors.dot = light ? '92, 70, 210' : '150, 160, 255';
-        particleColors.line = light ? '0, 150, 180' : '0, 212, 255';
+        particleColors.dot = light ? '120, 200, 170' : '140, 220, 180';
+        particleColors.line = light ? '100, 210, 170' : '80, 230, 200';
     }
     function refreshLiquidTheme() {
         if (liquid && typeof liquid.setTheme === 'function') liquid.setTheme(currentTheme());
@@ -261,6 +262,7 @@
     var cursorRing = document.getElementById('cursor-ring');
 
     if (finePointer && !prefersReduced && cursorDot && cursorRing) {
+        console.log('✓ Custom cursor initialized');
         document.body.classList.add('has-cursor');
         var mx = -100, my = -100, rx = -100, ry = -100;
 
@@ -600,8 +602,8 @@
         };
 
         var THEMES = {
-            dark: { c1: [0.030, 0.035, 0.080], c2: [0.180, 0.110, 0.420], c3: [0.000, 0.330, 0.430] },
-            light: { c1: [0.945, 0.955, 0.985], c2: [0.760, 0.720, 0.990], c3: [0.700, 0.900, 0.970] }
+            dark: { c1: [0.015, 0.050, 0.035], c2: [0.050, 0.200, 0.150], c3: [0.020, 0.300, 0.200] },
+            light: { c1: [0.880, 0.960, 0.940], c2: [0.400, 0.800, 0.700], c3: [0.200, 0.850, 0.650] }
         };
         var theme = currentTheme() === 'light' ? THEMES.light : THEMES.dark;
 
@@ -720,9 +722,9 @@
 
         /* Lights */
         var ambient = new THREE.AmbientLight(0xffffff, 0.55);
-        var keyLight = new THREE.PointLight(0x7c5cff, 2.2, 40); keyLight.position.set(6, 6, 6);
+        var keyLight = new THREE.PointLight(0x1dd1a1, 2.2, 40); keyLight.position.set(6, 6, 6);
         var fillLight = new THREE.PointLight(0x00d4ff, 1.8, 40); fillLight.position.set(-6, -3, 4);
-        var rimLight = new THREE.PointLight(0xff6584, 1.1, 40); rimLight.position.set(0, 6, -6);
+        var rimLight = new THREE.PointLight(0x00d9a3, 1.1, 40); rimLight.position.set(0, 6, -6);
         scene.add(ambient, keyLight, fillLight, rimLight);
 
         var group = new THREE.Group();
@@ -732,8 +734,8 @@
         var knotGeo = new THREE.TorusKnotGeometry(1.15, 0.34, isMobile() ? 140 : 220, isMobile() ? 20 : 32);
         /* Liquid-mercury material */
         var knotMat = new THREE.MeshStandardMaterial({
-            color: 0x8f7bff, metalness: 0.85, roughness: 0.14,
-            emissive: 0x0d0620, emissiveIntensity: 1
+            color: 0x38e4b5, metalness: 0.85, roughness: 0.14,
+            emissive: 0x0a1420, emissiveIntensity: 1
         });
         var knot = new THREE.Mesh(knotGeo, knotMat);
         group.add(knot);
@@ -1150,6 +1152,7 @@
             var fields = form.elements;
             var name = fields['name'].value.trim();
             var email = fields['email'].value.trim();
+            var subject = (fields['subject'] && fields['subject'].value || '').trim();
             var message = fields['message'].value.trim();
             var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -1162,12 +1165,34 @@
                 return;
             }
 
+            var payload = {
+                name: name,
+                email: email,
+                subject: subject,
+                message: message
+            };
+
             setStatus('Sending…', true);
-            /* Demo only — connect your backend / form service here */
-            window.setTimeout(function () {
+
+            console.log('Form payload:', payload);
+            console.log('Sending to:', scriptUrl);
+
+            fetch(scriptUrl, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                mode: 'no-cors'
+            })
+            .then(function (response) {
+                // With mode: 'no-cors', we can't read the response, but the request is sent
+                console.log('Request sent successfully');
                 setStatus('✓ Thanks ' + name + '! Your message has been sent — I will reply soon.', true);
                 form.reset();
-            }, 900);
+            })
+            .catch(function (error) {
+                console.error('Network error:', error.message);
+                console.error('Full error:', error);
+                setStatus('Network error: ' + error.message + '. Check browser console (F12) for details.', false);
+            });
         });
     }
 
