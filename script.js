@@ -408,8 +408,8 @@
        ════════════════════════════════════════════════════════════ */
     var typedEl = document.getElementById('typed');
     var ROLES = [
-        'Front-End Developer', 'App Developer', 'Python Developer',
-        'UI/UX Designer', 'YouTuber', 'Content Creator', 'Tech Educator'
+        'Front-End Developer', 'App Developer',
+        'UI/UX Designer', 'Web Designer', 'Web Developer', 'cisco Certified'
     ];
 
     if (typedEl) {

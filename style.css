@@ -602,7 +602,7 @@ body.is-loading { overflow: hidden; }
   min-height: 100svh;
   display: flex;
   align-items: center;
-  padding: 130px 0 90px;
+  padding: 130px clamp(20px, 3vw, 52px) 90px;
   overflow: hidden;
 }
 .hero-inner {
@@ -610,7 +610,8 @@ body.is-loading { overflow: hidden; }
   grid-template-columns: 1.05fr 0.95fr;
   gap: 40px;
   align-items: center;
-  width: 100%;
+  width: min(1180px, 100%);
+  margin-inline: auto;
 }
 
 .hero-greet {
